@@ -1,0 +1,21 @@
+{
+  "name": "winston",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jesús Urrutia <jesus.urrutia@gmail.com> (https://jesusurrutia.com)",
+  "license": "MIT",
+  "scripts": {
+    "start": "node -r esm -r dotenv/config src",
+    "dev": "nodemon -r esm -r dotenv/config src"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}

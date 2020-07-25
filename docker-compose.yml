@@ -1,0 +1,57 @@
+version: "2"
+
+services:
+  app:
+    build: ./winston
+    ports:
+      - "5000:5000"
+    environment: 
+      LOG_LEVEL: silly
+      NODE_ENV: production
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: app.access
+
+  webos:
+    image: httpd
+    ports:
+      - "8080:80"
+
+  web:
+    image: httpd
+    ports:
+      - "80:80"
+    links:
+      - fluentd
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: httpd.access
+
+  fluentd:
+    build: ./fluentd
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    links:
+      - "elasticsearch"
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+      - "9880:9880"
+
+  elasticsearch:
+    image: elasticsearch:6.8.10
+    expose:
+      - 9200
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: kibana:6.8.10
+    links:
+      - "elasticsearch"
+    ports:
+      - "5601:5601"
